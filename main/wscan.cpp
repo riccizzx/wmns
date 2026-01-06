@@ -8,15 +8,6 @@ int main()
 
     net::server sv;
 
-    try {
-        sv.init();   // init winsock
-
-    }
-    catch (const std::exception& e) {
-        std::cerr << e.what() << '\n';
-        return 1;
-
-    }
 
     usage();
 
@@ -41,7 +32,11 @@ int main()
             scanf(" %c", &start);
 
             if (start == 'Y' || start == 'y') {
-                sv.setupsock(); // setup server socket and address
+
+                if (!sv.start()) {
+                    printf("failed to start server\n");
+                    break;
+				}
 
 
 

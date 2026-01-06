@@ -9,7 +9,7 @@
 
 #define		GLOBAL_WSCAN_H
 
-
+#include "../src/common/config/config.hpp"
 #include "../src/server/servercfg.hpp"
 #include "../src/common/net/socket.hpp"
 #include "../src/common/protocol/message.hpp"
