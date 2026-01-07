@@ -21,7 +21,7 @@ namespace net {
         
         bool listen(int backlog = SOMAXCONN);
         
-        TcpSocket accept();
+        int accept_client();
 
         void get_client_info(char* host, char* serv);
 
@@ -35,8 +35,15 @@ namespace net {
     private:
 
         SOCKET sock = INVALID_SOCKET;
+		SOCKET client_sock = INVALID_SOCKET;
+        
+        char buffer = 1024;
+
         WSADATA ws;
+
+
         sockaddr_in server_addr;
+		sockaddr_in client_addr;
             
 
     };
