@@ -23,7 +23,7 @@ int main()
         switch (choice) {
 
         case 'h':
-            printf("setting up server...\n");
+            printf("\nsetting up server...\n");
             printf("this server works on a socket model in your pc,\n");
             printf("binding your ip and a default port\n");
             printf("start local server? (Y/N)\n");
