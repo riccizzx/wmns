@@ -28,7 +28,31 @@ bool net::server::start() {
     }
 
 
-    printf("Server listening on port %d\n", DEFAULT_PORT);
+    printf("\nserver is listening for incomming connections...\n");
+	printf("waiting for clients to connect...\n\n");
+
+    try{
+
+		// accept client connection
+        if (listener.accept_client()) {
+
+            char host[NI_MAXHOST];
+            char serv[NI_MAXSERV];
+
+
+            listener.get_client_info(host, serv);
+
+            printf("client successfully connected!\n");
+
+        }
+
+    }catch(const std::exception& e){
+        
+        printf("server start error: %s\n", e.what());
+        return false;
+	
+    }
+
     return true;
 
 }
