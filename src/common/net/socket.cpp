@@ -75,14 +75,6 @@ bool net::TcpSocket::listen(int backlog) {
 
 }
 
-net::TcpSocket net::TcpSocket::accept() {
-
-    net::TcpSocket client;
-    client.sock = ::accept(sock, nullptr, nullptr);
-    return client;
-
-}
-
 int net::TcpSocket::recv_bytes(void* buf, size_t len) {
 
     return ::recv(sock, static_cast<char*>(buf), len, 0);
@@ -101,6 +93,15 @@ SOCKET net::TcpSocket::native() const {
 
 }
 
+int net::TcpSocket::accept_client() {
+   
+    int client_len = sizeof(client_addr);
+
+    client_sock = accept(sock, (sockaddr*)&client_addr, &client_len);
+
+    return client_sock;
+
+}
 
 int close(SOCKET s){
 
