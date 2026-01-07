@@ -3,6 +3,39 @@
 
 #include <cstdio>
 
+void net::TcpSocket::get_client_info(char* host, char* serv) {
+    // Placeholder for getting client information
+
+    host[NI_MAXHOST];
+    serv[NI_MAXSERV];
+
+	memset(host, 0, NI_MAXHOST);
+	memset(serv, 0, NI_MAXSERV);
+    
+    try {
+        if (getnameinfo((sockaddr*)&server_addr, sizeof(server_addr), host, NI_MAXHOST, serv, NI_MAXSERV, 0) == 0) {
+
+			printf("client connected: %s:%s\n", host, serv);
+
+        }
+        else {
+
+			inet_ntop(AF_INET, &server_addr.sin_addr, host, NI_MAXHOST);
+
+            printf("client connected: %s:%d\n", host, ntohs(server_addr.sin_port));
+
+        }
+
+    }
+
+    catch (const std::exception& e) {
+        
+        printf("get client info error: %s\n", e.what());
+    
+    }
+
+}
+
 bool net::TcpSocket::startapi() {
 
     if (WSAStartup(MAKEWORD(2, 2), &ws) != 0) {

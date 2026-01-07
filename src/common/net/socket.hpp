@@ -23,6 +23,8 @@ namespace net {
         
         TcpSocket accept();
 
+        void get_client_info(char* host, char* serv);
+
         int recv_bytes(void* buf, size_t len);
         int send_bytes(const void* buf, size_t len);
 

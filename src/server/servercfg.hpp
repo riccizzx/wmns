@@ -15,14 +15,14 @@ namespace net {
 
         bool start();
         void run();
-
+        
     private:
 
         TcpSocket listener;
         TcpSocket client;
 
-        void handle_connection();
-        void normal_channel();
+        //void handle_connection();
+        //void normal_channel();
 
     };
 

@@ -18,8 +18,8 @@ void usage()
 {
 
 	std::cout << "options:\n";
-	std::cout << "  -h host           start host ip address to send ping requests to\n";
-	std::cout << "  -q quit			  to quit program\n";
+	std::cout << "  -h host	start host ip address to send ping requests to\n";
+	std::cout << "  -q quit	to quit program\n";
 
 	printf("\n");
 }
