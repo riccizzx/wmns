@@ -75,6 +75,16 @@ bool net::TcpSocket::listen(int backlog) {
 
 }
 
+int net::TcpSocket::accept_client() {
+
+    int client_len = sizeof(client_addr);
+
+    client_sock = accept(sock, (sockaddr*)&client_addr, &client_len);
+
+    return client_sock;
+
+}
+
 int net::TcpSocket::recv_bytes(void* buf, size_t len) {
 
     return ::recv(sock, static_cast<char*>(buf), len, 0);
@@ -93,26 +103,25 @@ SOCKET net::TcpSocket::native() const {
 
 }
 
-int net::TcpSocket::accept_client() {
-   
-    int client_len = sizeof(client_addr);
-
-    client_sock = accept(sock, (sockaddr*)&client_addr, &client_len);
-
-    return client_sock;
-
-}
-
 int close(SOCKET s){
 
-    if (s != INVALID_SOCKET) {
+    try {
+        
+        if (s != INVALID_SOCKET) {
 
-        s == INVALID_SOCKET;
-	
-        closesocket(s);
-        WSACleanup();
-        //EXIT_FAILURE;
-    
+            s == INVALID_SOCKET;
+
+            closesocket(s);
+            WSACleanup();
+            //EXIT_FAILURE;
+
+        }
+
+    }
+    catch (const std::exception& e) {
+
+        handle_error("close socket failed\n");
+
     }
 
     return 0;
