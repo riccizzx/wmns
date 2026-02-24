@@ -49,7 +49,7 @@ namespace config { // default configuration values
 inline void handle_error(const char* msg) {
 	
 	int err = WSAGetLastError();
-	fprintf(stderr, "[!] % s: WSA error % d\n", msg, err);
+	fprintf(stderr, "[!] % s: server error % d\n", msg, err);
 
 	WSACleanup();
 	exit(EXIT_FAILURE);
