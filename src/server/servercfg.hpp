@@ -15,7 +15,8 @@ namespace net {
 
         bool start();
         void run();
-        
+        int handle_client_communication();
+
     private:
 
         TcpSocket listener;

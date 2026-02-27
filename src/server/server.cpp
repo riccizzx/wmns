@@ -22,67 +22,56 @@ bool net::server::start() {
     }
 
 
-    if (!listener.listen(SOMAXCONN)) {
+    if (listener.listen(SOMAXCONN) == SOCKET_ERROR) {
         handle_error("listen failed");
         return false;
     }
-
-    std::cout << "\nserver is listening for incomming connections...\n";
-    std::cout << "waiting for clients to connect...\n\n";
-
-	SOCKET client_sock = listener.accept_client();
-
-    if (client_sock != INVALID_SOCKET) {
-
-        char host[NI_MAXHOST];
-        char serv[NI_MAXSERV];
-
-
-        listener.get_client_info(host, serv);
-
-        std::cout << "client connected: \n";
-
+    else {
+        std::cout << "server is in listening state!\n";
     }
 
-	// client and server communication logic here
-
-	while (true) {
-
-		char buffer[1024];
-
-		memset(buffer, 0, sizeof(buffer));
-
-		int bytes_recv = listener.recv_bytes(buffer, sizeof(buffer));
-		if (bytes_recv > 0)
-        {
-			std::string recv_msg(buffer, bytes_recv);
-			std::cout << "Client: " << recv_msg << std::endl;
-		
-            if (recv_msg == "exit") {
-				std::cout << "Client requested to quit!" << std::endl;
-				break;
-
-			// send client a response message
-            }
-
-			listener.send_bytes(buffer, bytes_recv);
-			// to send custom message from server to client uncomment below
-			//std::string msg;
-			//std::getline(std::cin, msg);
-			//listener.send_bytes(msg.c_str(), msg.size());
-		}
-
-        else if (bytes_recv == 0) {
-			std::cout << "Client disconnected gracefully.\n";
-        
-        }
-
-		closesocket(client_sock);
-		std::cout << "Client disconnected.\n";
-
-	}
-
     return true;
-
 }
 
+int net::server::handle_client_communication()
+{
+    while (true)   // accept loop
+    {
+        SOCKET client_sock = listener.accept_client();
+
+        if (client_sock == INVALID_SOCKET)
+            continue;
+
+        std::cout << "Client connected!\n";
+
+        char buffer[1024];
+
+        while (true)  // client communication loop
+        {
+            memset(buffer, 0, sizeof(buffer));
+
+            int bytes_recv = recv(client_sock, buffer, sizeof(buffer), 0);
+
+            if (bytes_recv > 0)
+            {
+                std::string recv_msg(buffer, bytes_recv);
+                std::cout << "Client: " << recv_msg << std::endl;
+
+                if (recv_msg == "exit")
+                    break;
+
+                //int bytes_send = send(client_sock, buffer, sizeof(buffer), 0);
+                send(client_sock, buffer, bytes_recv, 0);
+            }
+            else
+            {
+                break; // client disconnected or error
+            }
+        }
+
+        closesocket(client_sock);
+        std::cout << "Client disconnected.\n";
+    }
+
+    return 0;
+}
